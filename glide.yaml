@@ -1,0 +1,9 @@
+package: learn-go-web-framework/gin-gorm-restful
+import:
+- package: github.com/gin-gonic/gin
+  version: ^1.2.0
+- package: github.com/go-sql-driver/mysql
+  version: ^1.3.0
+- package: github.com/jinzhu/gorm
+  version: ^1.9.1
+- package: github.com/jinzhu/inflection
