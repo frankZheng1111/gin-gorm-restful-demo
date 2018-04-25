@@ -31,11 +31,14 @@ func InitRouters(routerVersionGroup *gin.RouterGroup) {
 	//
 	db.DB().SetMaxOpenConns(100)
 
+  fmt.Println("Complete DB initialize");
+
 	persons := routerVersionGroup.Group("/persons")
 	persons.GET("/", getPersons)
 	persons.GET("/:id", getPerson)
 	persons.POST("/", createPerson)
 	persons.PUT("/:id", updatePerson)
+	persons.DELETE("/:id", deletePerson)
 }
 
 func updatePerson(c *gin.Context) {
@@ -76,4 +79,12 @@ func getPersons(c *gin.Context) {
 	} else {
 		c.JSON(200, people)
 	}
+}
+
+func deletePerson(c *gin.Context) {
+  id := c.Params.ByName("id")
+  var person Person
+  d := db.Where("id = ?", id).Delete(&person)
+  fmt.Println(d)
+  c.JSON(200, gin.H{"id#" + id: "deleted"})
 }
