@@ -1,4 +1,4 @@
-package groups
+package routers
 
 import (
 	"fmt"
@@ -16,7 +16,7 @@ type Person struct {
 	LastName  string `json:"last_name"`
 }
 
-func InitPersonsRouters(routerGroup *gin.RouterGroup) {
+func initPersonsRouters(routerGroup *gin.RouterGroup) {
 	db, err = gorm.Open("sqlite3", "./db/gorm.db")
 	if err != nil {
 		fmt.Println(err)
