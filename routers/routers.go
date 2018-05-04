@@ -5,6 +5,6 @@ import (
 )
 
 func InitRouters(routerVersionGroup *gin.RouterGroup) {
-	persons := routerVersionGroup.Group("/persons")
-	initPersonsRouters(persons)
+	pages := routerVersionGroup.Group("/pages")
+	initPagesRouters(pages)
 }
