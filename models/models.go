@@ -38,3 +38,14 @@ func GetAllPages() ([]Page, error) {
   err := db.Find(&pages).Error
   return pages, err
 }
+
+func GetPageById(id string) (Page, error) {
+	var page Page
+  err := db.Where("id = ?", id).First(&page).Error;
+  return page, err
+}
+
+func CreatePage(page Page) (Page, error) {
+  err := db.Create(&page).Error
+  return page, err
+}
