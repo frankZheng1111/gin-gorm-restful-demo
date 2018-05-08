@@ -38,6 +38,11 @@ func (page *Page) Destroy() error {
 	return err
 }
 
+func (page *Page) Save() error {
+	err := db.Save(&page).Error
+	return err
+}
+
 func GetAllPages() ([]Page, error) {
 	var pages []Page
 	err := db.Find(&pages).Error

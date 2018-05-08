@@ -12,22 +12,23 @@ func initPagesRouters(routerGroup *gin.RouterGroup) {
 	routerGroup.GET("/", getPages)
 	routerGroup.GET("/:id", getPage)
 	routerGroup.POST("/", createPage)
-	// routerGroup.PUT("/:id", updatePage)
+	routerGroup.PUT("/:id", updatePage)
 	routerGroup.DELETE("/:id", deletePage)
 }
 
-// func updatePage(c *gin.Context) {
-// 	var page Page
-// 	id := c.Params.ByName("id")
-// 	if err := db.Where("id = ?", id).First(&page).Error; err != nil {
-// 		c.AbortWithStatus(404)
-// 		fmt.Println(err)
-// 	}
-// 	c.BindJSON(&page)
-// 	db.Save(&page)
-// 	c.JSON(200, page)
-// }
-//
+func updatePage(c *gin.Context) {
+	var page db.Page
+	id := c.Params.ByName("id")
+	page, err := db.GetPageById(id)
+	if err != nil {
+		c.AbortWithStatus(404)
+		fmt.Println(err)
+	}
+	c.BindJSON(&page)
+	page.Save()
+	c.JSON(200, page)
+}
+
 func createPage(c *gin.Context) {
 	var page db.Page
 	var err error
