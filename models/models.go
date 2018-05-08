@@ -33,19 +33,24 @@ func init() {
 	fmt.Println("Complete DB initialize")
 }
 
+func (page *Page) Destroy() error {
+	err := db.Delete(&page).Error
+	return err
+}
+
 func GetAllPages() ([]Page, error) {
 	var pages []Page
-  err := db.Find(&pages).Error
-  return pages, err
+	err := db.Find(&pages).Error
+	return pages, err
 }
 
 func GetPageById(id string) (Page, error) {
 	var page Page
-  err := db.Where("id = ?", id).First(&page).Error;
-  return page, err
+	err := db.Where("id = ?", id).First(&page).Error
+	return page, err
 }
 
 func CreatePage(page Page) (Page, error) {
-  err := db.Create(&page).Error
-  return page, err
+	err := db.Create(&page).Error
+	return page, err
 }

@@ -2,8 +2,8 @@ package routers
 
 import (
 	"fmt"
-	"github.com/gin-gonic/gin"
 	db "gin-gorm-restful-demo/models"
+	"github.com/gin-gonic/gin"
 )
 
 var err error
@@ -13,7 +13,7 @@ func initPagesRouters(routerGroup *gin.RouterGroup) {
 	routerGroup.GET("/:id", getPage)
 	routerGroup.POST("/", createPage)
 	// routerGroup.PUT("/:id", updatePage)
-	// routerGroup.DELETE("/:id", deletePage)
+	routerGroup.DELETE("/:id", deletePage)
 }
 
 // func updatePage(c *gin.Context) {
@@ -30,7 +30,7 @@ func initPagesRouters(routerGroup *gin.RouterGroup) {
 //
 func createPage(c *gin.Context) {
 	var page db.Page
-  var err error
+	var err error
 	c.BindJSON(&page)
 	if page, err = db.CreatePage(page); err != nil {
 		c.AbortWithStatus(400)
@@ -58,11 +58,18 @@ func getPages(c *gin.Context) {
 		c.JSON(200, pages)
 	}
 }
-//
-// func deletePage(c *gin.Context) {
-// 	id := c.Params.ByName("id")
-// 	var page Page
-// 	d := db.Where("id = ?", id).Delete(&page)
-// 	fmt.Println(d)
-// 	c.JSON(200, gin.H{"id#" + id: "deleted"})
-// }
+
+func deletePage(c *gin.Context) {
+	id := c.Params.ByName("id")
+	page, err := db.GetPageById(id)
+	if err != nil {
+		c.AbortWithStatus(404)
+		fmt.Println(err)
+	}
+	if err = page.Destroy(); err != nil {
+		c.AbortWithStatus(400)
+		fmt.Println(err)
+	} else {
+		c.JSON(200, page)
+	}
+}
