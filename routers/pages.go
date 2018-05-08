@@ -21,8 +21,9 @@ func updatePage(c *gin.Context) {
 	id := c.Params.ByName("id")
 	page, err := db.GetPageById(id)
 	if err != nil {
-		c.AbortWithStatus(404)
 		fmt.Println(err)
+		c.JSON(404, gin.H{"msg": "page not found"})
+		return
 	}
 	c.BindJSON(&page)
 	page.Save()
@@ -44,8 +45,8 @@ func createPage(c *gin.Context) {
 func getPage(c *gin.Context) {
 	id := c.Params.ByName("id")
 	if page, err := db.GetPageById(id); err != nil {
-		c.AbortWithStatus(404)
 		fmt.Println(err)
+		c.JSON(404, gin.H{"msg": "pages not found"})
 	} else {
 		c.JSON(200, page)
 	}
@@ -53,8 +54,10 @@ func getPage(c *gin.Context) {
 
 func getPages(c *gin.Context) {
 	if pages, err := db.GetAllPages(); err != nil {
-		c.AbortWithStatus(404)
 		fmt.Println(err)
+		c.JSON(404, gin.H{
+			"msg": "pages not found",
+		})
 	} else {
 		c.JSON(200, pages)
 	}
@@ -64,12 +67,13 @@ func deletePage(c *gin.Context) {
 	id := c.Params.ByName("id")
 	page, err := db.GetPageById(id)
 	if err != nil {
-		c.AbortWithStatus(404)
 		fmt.Println(err)
+		c.JSON(404, gin.H{"msg": "page not found"})
+		return
 	}
 	if err = page.Destroy(); err != nil {
-		c.AbortWithStatus(400)
 		fmt.Println(err)
+		c.AbortWithStatus(400)
 	} else {
 		c.JSON(200, page)
 	}
